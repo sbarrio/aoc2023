@@ -44,28 +44,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         cards.push(card_entry);
     }
 
+    // Update counters
     let cards_len = cards.len();
     for index in 0..cards_len {
         let (matches, score) = get_card_score(&cards[index]);
         cards[index].score = score;
 
-        // Update counters
         if matches > 0 {
-            println!("Card {} has {} matches", &cards[index].id, matches);
             for i in index + 1..std::cmp::min(index + 1 + matches as usize, cards_len) {
                 cards[i].count += 1 * cards[index].count;
             }
         }
     }
 
+    // Count them all
     let mut card_amount = 0;
     for c in cards {
-        println!("Card {} - {:?} - {:?} {} {}", c.id, c.winners, c.candidates, c.score, c.count);
+        //println!("Card {} - {:?} - {:?} {} {}", c.id, c.winners, c.candidates, c.score, c.count);
         card_amount +=  c.count;
     }
 
     println!("Total scratchcards: {}", card_amount);
-
     Ok(())
 }
 
